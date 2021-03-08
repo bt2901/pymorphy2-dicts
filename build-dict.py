@@ -32,7 +32,6 @@ import logging
 import opencorpora
 from docopt import docopt
 
-import pymorphy2.lang
 from pymorphy2 import opencorpora_dict
 from pymorphy2.opencorpora_dict.probability import add_conditional_tag_probability
 from pymorphy2.opencorpora_dict.storage import update_meta
@@ -71,11 +70,11 @@ if __name__ == '__main__':
     dict_xml = args['<dict.xml>']
     out_path = args['<out-folder>']
 
-    try:
-        lang = getattr(pymorphy2.lang, args['--lang'])
-    except AttributeError:
-        print("Unknown language code: %r" % args['--lang'])
-        sys.exit(1)
+    #try:
+    #    lang = getattr(pymorphy2.lang, args['--lang'])
+    #except AttributeError:
+    #    print("Unknown language code: %r" % args['--lang'])
+    #    sys.exit(1)
 
     if os.path.exists(out_path):
         if args['--clear']:
@@ -88,7 +87,8 @@ if __name__ == '__main__':
         (key.replace('-', '_'), int(args['--' + key]))
         for key in ('min-ending-freq', 'min-paradigm-popularity', 'max-suffix-length')
     )
-    compile_options["paradigm_prefixes"] = lang.PARADIGM_PREFIXES
+    # compile_options["paradigm_prefixes"] = lang.PARADIGM_PREFIXES
+    compile_options["paradigm_prefixes"] = ['', 'naj']  # not sure, maybe just ['']?
 
     opencorpora_dict.convert_to_pymorphy2(
         opencorpora_dict_path=dict_xml,
